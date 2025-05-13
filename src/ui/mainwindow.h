@@ -22,6 +22,7 @@ private slots:
     void switchToChat();
     void switchToRoleManager();
     void handleRoleSelected(const QString &roleName);
+    void updateRoleList();
 
 private:
     Ui::MainWindow *ui;

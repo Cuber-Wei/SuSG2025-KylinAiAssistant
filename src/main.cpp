@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QTranslator>
 #include <QLocale>
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +12,9 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName("麒麟AI助手");
     QApplication::setApplicationVersion("1.0.0");
     QApplication::setOrganizationName("SuSG2025");
+    
+    // 设置应用程序图标
+    QApplication::setWindowIcon(QIcon(":/resources/icons/app.png"));
     
     // 加载翻译文件
     QTranslator translator;

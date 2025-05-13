@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QString>
+#include <QComboBox>
 #include "../core/chat/chatcore.h"
 #include "../core/voice/voicehandler.h"
 
@@ -19,16 +20,19 @@ public:
     ~ChatWindow();
 
     void setCurrentRole(const QString &roleName);
+    void updateRoleList(const QStringList &roles);
 
 public slots:
     void handleMessageReceived(const Message &message);
     void handleError(const QString &error);
     void handleTextRecognized(const QString &text);
+    void onRoleComboBoxChanged(int index);
 
 private slots:
     void on_sendButton_clicked();
     void handleVoiceButtonClicked();
     void onRoleSelected(const QString &roleName);
+    void on_addRoleButton_clicked();
 
 private:
     Ui::ChatWindow *ui;

@@ -1,0 +1,1 @@
+qmake && make clean && make && ./SuSG2025-KylinAiAssistant

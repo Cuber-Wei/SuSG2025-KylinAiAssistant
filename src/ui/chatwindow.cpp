@@ -1,8 +1,10 @@
 #include "chatwindow.h"
 #include "ui_chatwindow.h"
+#include "../core/role/rolemanager.h"
 #include <QDateTime>
 #include <QMessageBox>
 #include <QScrollBar>
+#include <QIcon>
 
 ChatWindow::ChatWindow(QWidget *parent)
     : QWidget(parent)
@@ -12,6 +14,10 @@ ChatWindow::ChatWindow(QWidget *parent)
     , currentRole("default")
 {
     ui->setupUi(this);
+    
+    // 设置按钮图标
+    ui->sendButton->setIcon(QIcon(":/resources/icons/send.png"));
+    ui->voiceButton->setIcon(QIcon(":/resources/icons/voice.png"));
     
     // 初始化聊天核心
     if (!chatCore->initialize()) {
@@ -25,6 +31,9 @@ ChatWindow::ChatWindow(QWidget *parent)
     connect(chatCore, &ChatCore::errorOccurred, this, &ChatWindow::handleError);
     connect(voiceHandler, &VoiceHandler::textRecognized, this, &ChatWindow::handleTextRecognized);
     connect(voiceHandler, &VoiceHandler::errorOccurred, this, &ChatWindow::handleError);
+    connect(ui->roleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &ChatWindow::onRoleComboBoxChanged);
+    connect(ui->addRoleButton, &QPushButton::clicked, this, &ChatWindow::on_addRoleButton_clicked);
     
     // 设置占位符文本
     ui->messageEdit->setPlaceholderText("请输入消息...");
@@ -42,7 +51,43 @@ void ChatWindow::setCurrentRole(const QString &role)
 {
     currentRole = role;
     chatCore->setCurrentRole(role);
-    ui->roleLabel->setText("当前角色: " + role);
+    
+    // 更新下拉框选中项
+    int index = ui->roleComboBox->findText(role);
+    if (index != -1) {
+        ui->roleComboBox->setCurrentIndex(index);
+    }
+}
+
+void ChatWindow::updateRoleList(const QStringList &roles)
+{
+    QStringList newRoles = roles;
+    // 如果没有"默认"角色，则添加
+    if (!newRoles.contains("默认")) {
+        newRoles.prepend("默认");
+    }
+    // 保存当前选中的角色
+    QString currentRole = ui->roleComboBox->currentText();
+    // 清空并重新添加角色列表
+    ui->roleComboBox->clear();
+    ui->roleComboBox->addItems(newRoles);
+    // 优先选中"默认"
+    int index = ui->roleComboBox->findText("默认");
+    if (index != -1) {
+        ui->roleComboBox->setCurrentIndex(index);
+        setCurrentRole("默认");
+    } else if (!newRoles.isEmpty()) {
+        ui->roleComboBox->setCurrentIndex(0);
+        setCurrentRole(newRoles.first());
+    }
+}
+
+void ChatWindow::onRoleComboBoxChanged(int index)
+{
+    if (index >= 0) {
+        QString selectedRole = ui->roleComboBox->currentText();
+        setCurrentRole(selectedRole);
+    }
 }
 
 void ChatWindow::on_sendButton_clicked()
@@ -103,4 +148,19 @@ void ChatWindow::handleError(const QString &error)
 void ChatWindow::onRoleSelected(const QString &roleName)
 {
     setCurrentRole(roleName);
+    // 清空聊天记录
+    ui->chatDisplay->clear();
+    // 显示欢迎消息
+    QString welcomeMessage = QString("已切换到角色：%1\n\n%2")
+        .arg(roleName)
+        .arg("您好！我是您的AI助手，请问有什么可以帮您？");
+    ui->chatDisplay->append(welcomeMessage);
+}
+
+void ChatWindow::on_addRoleButton_clicked()
+{
+    // 打开角色管理窗口
+    RoleManager *roleManager = new RoleManager(this);
+    roleManager->setAttribute(Qt::WA_DeleteOnClose);
+    roleManager->show();
 } 

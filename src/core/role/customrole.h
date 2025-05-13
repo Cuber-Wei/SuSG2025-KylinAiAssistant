@@ -19,8 +19,8 @@ public:
     // 获取角色描述
     QString getDescription() const;
     
-    // 获取对话风格
-    QString getStyle() const;
+    // 获取角色设定（prompt）
+    QString getPrompt() const;
     
     // 设置角色名称
     void setName(const QString &name);
@@ -28,8 +28,8 @@ public:
     // 设置角色描述
     void setDescription(const QString &description);
     
-    // 设置对话风格
-    void setStyle(const QString &style);
+    // 设置角色设定（prompt）
+    void setPrompt(const QString &prompt);
     
     // 处理消息
     QString processMessage(const QString &message) const;
@@ -37,7 +37,7 @@ public:
 private:
     QString name;
     QString description;
-    QString style;
+    QString prompt;
     
     // 根据角色风格处理消息
     QString applyStyle(const QString &message) const;

@@ -15,7 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # 项目名称
@@ -27,6 +26,7 @@ SOURCES += \
     src/main.cpp \
     src/ui/mainwindow.cpp \
     src/ui/chatwindow.cpp \
+    src/ui/customroledialog.cpp \
     src/core/chat/chatcore.cpp \
     src/core/role/rolemanager.cpp \
     src/core/role/customrole.cpp \
@@ -34,8 +34,10 @@ SOURCES += \
 
 # 头文件
 HEADERS += \
+    include/kylin_ai_sdk.h \
     src/ui/mainwindow.h \
     src/ui/chatwindow.h \
+    src/ui/customroledialog.h \
     src/core/chat/chatcore.h \
     src/core/role/rolemanager.h \
     src/core/role/customrole.h \
@@ -45,6 +47,7 @@ HEADERS += \
 FORMS += \
     src/ui/mainwindow.ui \
     src/ui/chatwindow.ui \
+    src/ui/customroledialog.ui \
     src/ui/rolemanager.ui
 
 # 默认规则
@@ -65,7 +68,7 @@ RESOURCES += \
 
 # 翻译文件
 TRANSLATIONS += \
-    SuSG2025-KylinAiAssistant_zh_CN.ts
+    translations/kylin_ai_assistant_zh_CN.ts
 
 # 样式文件
 QMAKE_RESOURCE_PREFIX = /qt-project.org

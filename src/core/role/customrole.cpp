@@ -2,14 +2,17 @@
 
 CustomRole::CustomRole(QObject *parent)
     : QObject(parent)
+    , name("")
+    , description("")
+    , prompt("")
 {
 }
 
-CustomRole::CustomRole(const QString &name, const QString &description, const QString &style, QObject *parent)
+CustomRole::CustomRole(const QString &name, const QString &description, const QString &prompt, QObject *parent)
     : QObject(parent)
     , name(name)
     , description(description)
-    , style(style)
+    , prompt(prompt)
 {
 }
 
@@ -27,9 +30,9 @@ QString CustomRole::getDescription() const
     return description;
 }
 
-QString CustomRole::getStyle() const
+QString CustomRole::getPrompt() const
 {
-    return style;
+    return prompt;
 }
 
 void CustomRole::setName(const QString &newName)
@@ -46,17 +49,17 @@ void CustomRole::setDescription(const QString &newDescription)
     }
 }
 
-void CustomRole::setStyle(const QString &newStyle)
+void CustomRole::setPrompt(const QString &newPrompt)
 {
-    if (style != newStyle) {
-        style = newStyle;
+    if (prompt != newPrompt) {
+        prompt = newPrompt;
     }
 }
 
 QString CustomRole::processMessage(const QString &message) const
 {
-    // 根据角色风格处理消息
-    return applyStyle(message);
+    // 这里可以根据prompt做更复杂的处理，目前直接返回message
+    return message;
 }
 
 QString CustomRole::applyStyle(const QString &message) const
