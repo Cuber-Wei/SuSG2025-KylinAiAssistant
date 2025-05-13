@@ -54,3 +54,5 @@ compile_commands.json
 *_qmlcache.qrc
 
 .DS_Store
+# executable files
+SuSG2025-KylinAiAssistant

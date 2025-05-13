@@ -98,4 +98,9 @@ void ChatWindow::handleTextRecognized(const QString &text)
 void ChatWindow::handleError(const QString &error)
 {
     QMessageBox::warning(this, "错误", error);
+}
+
+void ChatWindow::onRoleSelected(const QString &roleName)
+{
+    setCurrentRole(roleName);
 } 
