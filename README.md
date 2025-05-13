@@ -1,79 +1,54 @@
 # 麒麟AI助手
 
-一个基于Qt框架开发的多功能AI交互助手，支持文本和语音对话，并提供多种内置角色和自定义角色功能。
-
-## 功能特点
-
-- 文本对话：支持自然语言理解和多轮对话
-- 语音对话：支持语音识别和语音合成
-- 内置角色：包含律师、教师、程序员、作家等专业角色
-- 自定义角色：允许用户创建和管理自定义角色
-
-## 系统要求
-
-- Qt 6.0或更高版本
-- C++17或更高版本
-- CMake 3.16或更高版本
-- 支持C++17的编译器（如GCC 7+、Clang 5+、MSVC 2017+）
-
-## 构建步骤
-
-1. 克隆仓库：
-```bash
-git clone https://github.com/yourusername/KylinAiAssistant.git
-cd KylinAiAssistant
-```
-
-2. 创建构建目录：
-```bash
-mkdir build
-cd build
-```
-
-3. 配置项目：
-```bash
-cmake ..
-```
-
-4. 编译项目：
-```bash
-cmake --build .
-```
-
-## 运行
-
-在构建目录中运行：
-```bash
-./KylinAiAssistant
-```
+基于麒麟操作系统的多功能AI交互助手，支持文本对话、语音交互和角色定制功能。
 
 ## 项目结构
 
 ```
-KylinAiAssistant/
-├── CMakeLists.txt
-├── README.md
-├── src/
-│   ├── main.cpp
-│   ├── mainwindow.cpp
-│   ├── mainwindow.h
-│   ├── chat/
-│   │   ├── chatwidget.cpp
-│   │   └── chatwidget.h
-│   ├── voice/
-│   │   ├── voicewidget.cpp
-│   │   └── voicewidget.h
-│   └── roles/
-│       ├── rolemanager.cpp
-│       ├── rolemanager.h
-│       ├── builtinroles.cpp
-│       ├── builtinroles.h
-│       ├── customrole.cpp
-│       └── customrole.h
-└── resources/
-    └── resources.qrc
+.
+├── include/           # 麒麟AI SDK头文件
+├── lib/              # 麒麟AI SDK库文件
+├── resources/        # 资源文件
+│   ├── icons/       # 图标文件
+│   └── styles/      # 样式文件
+└── src/             # 源代码
+    ├── core/        # 核心功能
+    │   ├── chat/    # 聊天相关
+    │   ├── role/    # 角色管理
+    │   └── voice/   # 语音处理
+    └── ui/          # 界面相关
 ```
+
+## 功能特性
+
+1. 文本对话
+   - 自然语言理解
+   - 多轮对话支持
+   - 上下文理解
+
+2. 语音交互
+   - 语音识别
+   - 语音合成
+   - 实时对话
+
+3. 角色系统
+   - 内置角色（律师、教师、程序员、作家）
+   - 自定义角色
+   - 角色风格定制
+
+## 开发环境
+
+- Qt 5.15+
+- C++17
+- 麒麟AI SDK
+
+## 构建说明
+
+1. 确保已安装Qt开发环境
+2. 将麒麟AI SDK文件放入include和lib目录
+3. 使用Qt Creator打开项目文件
+4. 构建并运行项目
 
 ## 许可证
 
-本项目采用MIT许可证。详见[LICENSE](LICENSE)文件。
+本项目采用MIT许可证

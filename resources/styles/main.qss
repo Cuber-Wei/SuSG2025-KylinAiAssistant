@@ -1,0 +1,95 @@
+/* 主窗口样式 */
+QMainWindow {
+    background-color: #f5f5f5;
+}
+
+/* 菜单栏样式 */
+QMenuBar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+QMenuBar::item {
+    padding: 5px 10px;
+}
+
+QMenuBar::item:selected {
+    background-color: #e0e0e0;
+}
+
+/* 聊天窗口样式 */
+QTextEdit#chatDisplay {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+QLineEdit#messageInput {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #ffffff;
+}
+
+QPushButton {
+    background-color: #2196f3;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 15px;
+}
+
+QPushButton:hover {
+    background-color: #1976d2;
+}
+
+QPushButton:pressed {
+    background-color: #1565c0;
+}
+
+/* 角色列表样式 */
+QListWidget#roleList {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+QListWidget::item {
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+QListWidget::item:selected {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+/* 角色管理窗口样式 */
+QFormLayout {
+    spacing: 10px;
+}
+
+QLabel {
+    color: #333333;
+}
+
+QTextEdit {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #ffffff;
+}
+
+/* 分割线样式 */
+QSplitter::handle {
+    background-color: #e0e0e0;
+}
+
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+
+QSplitter::handle:vertical {
+    height: 1px;
+} 

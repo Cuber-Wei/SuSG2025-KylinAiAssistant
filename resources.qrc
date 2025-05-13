@@ -1,0 +1,15 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>resources/icons/app.png</file>
+        <file>resources/icons/chat.png</file>
+        <file>resources/icons/role.png</file>
+        <file>resources/icons/voice.png</file>
+        <file>resources/icons/send.png</file>
+        <file>resources/styles/main.qss</file>
+        <file>resources/styles/style.qss</file>
+    </qresource>
+    <qresource prefix="/translations">
+        <file>SuSG2025-KylinAiAssistant_zh_CN.ts</file>
+    </qresource>
+</RCC> 
