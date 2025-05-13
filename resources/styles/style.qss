@@ -1,0 +1,77 @@
+/* 主窗口样式 */
+QMainWindow {
+    background-color: #f5f5f5;
+}
+
+/* 聊天窗口样式 */
+QTextEdit {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+/* 按钮样式 */
+QPushButton {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+QPushButton:hover {
+    background-color: #1976D2;
+}
+
+QPushButton:pressed {
+    background-color: #1565C0;
+}
+
+/* 输入框样式 */
+QLineEdit {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    background-color: white;
+}
+
+/* 列表样式 */
+QListWidget {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+QListWidget::item {
+    padding: 8px;
+}
+
+QListWidget::item:selected {
+    background-color: #E3F2FD;
+    color: #1976D2;
+}
+
+/* 标签样式 */
+QLabel {
+    color: #333;
+}
+
+/* 滚动条样式 */
+QScrollBar:vertical {
+    border: none;
+    background: #f5f5f5;
+    width: 10px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #BDBDBD;
+    border-radius: 5px;
+    min-height: 20px;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+} 

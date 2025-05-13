@@ -16,10 +16,13 @@ public:
     ~VoiceHandler();
 
     // 开始录音
-    void startRecording();
+    bool startRecording();
     
     // 停止录音
     void stopRecording();
+    
+    // 是否正在录音
+    bool isRecording() const;
     
     // 播放文本
     void playText(const QString &text);
@@ -40,13 +43,14 @@ signals:
 private:
     QAudioInput *audioInput;
     QAudioOutput *audioOutput;
-    QBuffer *audioBuffer;
+    QBuffer audioBuffer;
+    bool recording;
     
     // 初始化音频设备
     void initializeAudioDevices();
     
-    // 处理音频数据
-    void processAudioData(const QByteArray &data);
+    // 处理录音数据
+    void processAudioData();
 };
 
 #endif // VOICEHANDLER_H 

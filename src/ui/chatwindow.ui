@@ -6,69 +6,62 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>800</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="windowTitle">
+   <string>聊天窗口</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QSplitter" name="splitter">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+    <widget class="QLabel" name="roleLabel">
+     <property name="text">
+      <string>当前角色: 默认</string>
      </property>
-     <widget class="QWidget" name="leftPanel" native="true">
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="chatDisplay">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QTextEdit" name="messageEdit">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QListWidget" name="roleList">
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="rightPanel" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QTextEdit" name="chatDisplay">
-         <property name="readOnly">
-          <bool>true</bool>
+        <widget class="QPushButton" name="sendButton">
+         <property name="text">
+          <string>发送</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QPushButton" name="voiceButton">
-           <property name="text">
-            <string>语音</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="messageInput"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="sendButton">
-           <property name="text">
-            <string>发送</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QPushButton" name="voiceButton">
+         <property name="text">
+          <string>语音</string>
+         </property>
+        </widget>
        </item>
       </layout>
-     </widget>
-    </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

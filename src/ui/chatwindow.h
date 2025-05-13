@@ -21,13 +21,13 @@ public:
     void setCurrentRole(const QString &roleName);
 
 public slots:
-    void handleMessageReceived(const QString &message);
+    void handleMessageReceived(const Message &message);
     void handleError(const QString &error);
     void handleTextRecognized(const QString &text);
 
 private slots:
-    void onSendButtonClicked();
-    void onVoiceButtonClicked();
+    void on_sendButton_clicked();
+    void handleVoiceButtonClicked();
     void onRoleSelected(const QString &roleName);
 
 private:

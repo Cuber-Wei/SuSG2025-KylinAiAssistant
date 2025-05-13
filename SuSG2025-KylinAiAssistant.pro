@@ -52,9 +52,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-# 添加麒麟AI SDK
-LIBS += -L$$PWD/lib -lkylin_ai_sdk
-
 # 包含目录
 INCLUDEPATH += \
     $$PWD/src \
@@ -69,10 +66,6 @@ RESOURCES += \
 # 翻译文件
 TRANSLATIONS += \
     SuSG2025-KylinAiAssistant_zh_CN.ts
-
-# 麒麟AI SDK
-INCLUDEPATH += include
-LIBS += -Llib -lkylinai
 
 # 样式文件
 QMAKE_RESOURCE_PREFIX = /qt-project.org

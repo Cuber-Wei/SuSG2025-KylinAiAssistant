@@ -78,7 +78,7 @@
   <customwidget>
    <class>RoleManager</class>
    <extends>QWidget</extends>
-   <header>rolemanager.h</header>
+   <header>src/core/role/rolemanager.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

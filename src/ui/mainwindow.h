@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QStackedWidget>
 #include "chatwindow.h"
-#include "rolemanager.h"
+#include "../core/role/rolemanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

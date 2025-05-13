@@ -1,17 +1,17 @@
 #ifndef ROLEMANAGER_H
 #define ROLEMANAGER_H
 
-#include <QObject>
+#include <QWidget>
 #include <QMap>
 #include <QString>
 #include "customrole.h"
 
-class RoleManager : public QObject
+class RoleManager : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit RoleManager(QObject *parent = nullptr);
+    explicit RoleManager(QWidget *parent = nullptr);
     ~RoleManager();
 
     // 添加自定义角色
@@ -33,6 +33,7 @@ signals:
     void roleAdded(const QString &name);
     void roleRemoved(const QString &name);
     void roleModified(const QString &name);
+    void roleSelected(const QString &name);
     void errorOccurred(const QString &error);
 
 private:

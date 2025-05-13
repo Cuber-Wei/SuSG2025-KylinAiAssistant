@@ -4,9 +4,10 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDir>
+#include <QDebug>
 
-RoleManager::RoleManager(QObject *parent)
-    : QObject(parent)
+RoleManager::RoleManager(QWidget *parent)
+    : QWidget(parent)
 {
     initializeDefaultRoles();
     loadCustomRoles();
