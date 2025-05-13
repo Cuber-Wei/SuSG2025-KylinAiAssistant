@@ -1,17 +1,18 @@
 #include "customroledialog.h"
 #include "ui_customroledialog.h"
 #include <QMessageBox>
+#include <QDebug>
 
 CustomRoleDialog::CustomRoleDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::CustomRoleDialog)
+    , isEditMode(false)
 {
     ui->setupUi(this);
-    setWindowTitle("新建角色");
     
-    // 连接按钮信号
-    connect(ui->confirmButton, &QPushButton::clicked, this, &CustomRoleDialog::on_confirmButton_clicked);
-    connect(ui->cancelButton, &QPushButton::clicked, this, &CustomRoleDialog::on_cancelButton_clicked);
+    // 设置窗口属性
+    setWindowTitle("新建角色");
+    setModal(true);
 }
 
 CustomRoleDialog::~CustomRoleDialog()
@@ -19,44 +20,46 @@ CustomRoleDialog::~CustomRoleDialog()
     delete ui;
 }
 
-QString CustomRoleDialog::getRoleName() const
+RoleData CustomRoleDialog::getRoleData() const
 {
-    return ui->nameEdit->text().trimmed();
+    RoleData data;
+    data.name = ui->nameLineEdit->text();
+    data.description = ui->descriptionLineEdit->text();
+    data.prompt = ui->promptTextEdit->toPlainText();
+    return data;
 }
 
-QString CustomRoleDialog::getRoleDescription() const
+void CustomRoleDialog::setRoleData(const RoleData &data)
 {
-    return ui->descriptionEdit->text().trimmed();
+    ui->nameLineEdit->setText(data.name);
+    ui->descriptionLineEdit->setText(data.description);
+    ui->promptTextEdit->setText(data.prompt);
 }
 
-QString CustomRoleDialog::getRolePrompt() const
+void CustomRoleDialog::setEditMode(bool isEdit)
 {
-    return ui->promptEdit->toPlainText().trimmed();
-}
-
-void CustomRoleDialog::validateInput()
-{
-    if (getRoleName().isEmpty()) {
-        QMessageBox::warning(this, "输入错误", "请输入角色名称");
-        ui->nameEdit->setFocus();
-        return;
+    isEditMode = isEdit;
+    if (isEdit) {
+        setWindowTitle("编辑角色");
+    } else {
+        setWindowTitle("新建角色");
     }
-    
-    if (getRolePrompt().isEmpty()) {
-        QMessageBox::warning(this, "输入错误", "请输入角色设定");
-        ui->promptEdit->setFocus();
-        return;
-    }
-    
-    accept();
 }
 
 void CustomRoleDialog::on_confirmButton_clicked()
 {
-    validateInput();
+    // 验证输入
+    if (ui->nameLineEdit->text().isEmpty()) {
+        QMessageBox::warning(this, "错误", "请输入角色名称");
+        return;
+    }
+    
+    emit roleConfirmed(getRoleData());
+    accept();
 }
 
 void CustomRoleDialog::on_cancelButton_clicked()
 {
+    // 直接关闭对话框
     reject();
 } 

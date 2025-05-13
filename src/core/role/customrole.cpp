@@ -2,9 +2,6 @@
 
 CustomRole::CustomRole(QObject *parent)
     : QObject(parent)
-    , name("")
-    , description("")
-    , prompt("")
 {
 }
 
@@ -58,15 +55,20 @@ void CustomRole::setPrompt(const QString &newPrompt)
 
 QString CustomRole::processMessage(const QString &message) const
 {
-    // 这里可以根据prompt做更复杂的处理，目前直接返回message
-    return message;
+    // 根据角色提示词处理消息
+    return applyPrompt(message);
 }
 
-QString CustomRole::applyStyle(const QString &message) const
+QString CustomRole::applyPrompt(const QString &message) const
 {
-    // TODO: 根据角色风格处理消息
+    // TODO: 根据角色提示词处理消息
     // 这里需要根据麒麟AI SDK的能力来实现
     
     // 临时返回一个简单的处理结果
-    return QString("[%1] %2").arg(name, message);
+    if (!prompt.isEmpty()) {
+        // 使用提示词来引导AI回应
+        return QString("[%1] %2").arg(name, message);
+    } else {
+        return QString("[%1] %2").arg(name, message);
+    }
 } 

@@ -2,10 +2,13 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QIcon>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , chatPage(nullptr)
+    , rolePage(nullptr)
 {
     ui->setupUi(this);
     setupUI();
@@ -24,8 +27,16 @@ MainWindow::~MainWindow()
 void MainWindow::setupUI()
 {
     stackedWidget = ui->stackedWidget;
+    // chatPage 和 rolePage 是 stackedWidget 直接管理的页面
+    chatPage = ui->chatPage; 
+    rolePage = ui->rolePage;
+    // chatWindow 和 roleManager 是各自页面的子控件
     chatWindow = ui->chatWindow;
     roleManager = ui->roleManager;
+
+    stackedWidget->addWidget(rolePage);
+
+    switchToChat(); 
 }
 
 void MainWindow::setupConnections()
@@ -40,6 +51,9 @@ void MainWindow::setupConnections()
     connect(roleManager, &RoleManager::roleRemoved, this, &MainWindow::updateRoleList);
     connect(roleManager, &RoleManager::roleModified, this, &MainWindow::updateRoleList);
     
+    // 连接聊天窗口的新建角色信号
+    connect(chatWindow, &ChatWindow::newRoleCreated, this, &MainWindow::handleNewRole);
+    
     // 初始化角色列表
     updateRoleList();
 }
@@ -52,12 +66,16 @@ void MainWindow::updateRoleList()
 
 void MainWindow::switchToChat()
 {
-    stackedWidget->setCurrentWidget(chatWindow);
+    if (stackedWidget && chatPage) {
+        stackedWidget->setCurrentWidget(chatPage);
+    }
 }
 
 void MainWindow::switchToRoleManager()
 {
-    stackedWidget->setCurrentWidget(roleManager);
+    if (stackedWidget && rolePage) {
+        stackedWidget->setCurrentWidget(rolePage);
+    }
 }
 
 void MainWindow::handleRoleSelected(const QString &roleName)
@@ -65,4 +83,16 @@ void MainWindow::handleRoleSelected(const QString &roleName)
     // 切换到聊天窗口并设置选中的角色
     switchToChat();
     chatWindow->setCurrentRole(roleName);
+}
+
+void MainWindow::handleNewRole(const RoleData &data)
+{
+    if (roleManager->addRole(data.name, data.description, data.prompt)) {
+        updateRoleList();
+        chatWindow->setCurrentRole(data.name);
+        switchToChat();
+        QMessageBox::information(this, "成功", "新角色创建成功！");
+    } else {
+        QMessageBox::critical(this, "错误", "创建角色失败，请重试！\n可能原因：角色名称已存在。");
+    }
 } 

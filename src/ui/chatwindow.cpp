@@ -1,17 +1,19 @@
 #include "chatwindow.h"
 #include "ui_chatwindow.h"
-#include "../core/role/rolemanager.h"
 #include <QDateTime>
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QIcon>
+#include <QDebug>
+#include "customroledialog.h"
 
 ChatWindow::ChatWindow(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ChatWindow)
     , chatCore(new ChatCore(this))
     , voiceHandler(new VoiceHandler(this))
-    , currentRole("default")
+    , currentRole("默认")
+    , roleManager(nullptr)
 {
     ui->setupUi(this);
     
@@ -27,13 +29,13 @@ ChatWindow::ChatWindow(QWidget *parent)
     // 连接信号和槽
     connect(ui->sendButton, &QPushButton::clicked, this, &ChatWindow::on_sendButton_clicked);
     connect(ui->voiceButton, &QPushButton::clicked, this, &ChatWindow::handleVoiceButtonClicked);
+    connect(ui->newRoleButton, &QPushButton::clicked, this, &ChatWindow::on_newRoleButton_clicked);
     connect(chatCore, &ChatCore::messageReceived, this, &ChatWindow::handleMessageReceived);
     connect(chatCore, &ChatCore::errorOccurred, this, &ChatWindow::handleError);
     connect(voiceHandler, &VoiceHandler::textRecognized, this, &ChatWindow::handleTextRecognized);
     connect(voiceHandler, &VoiceHandler::errorOccurred, this, &ChatWindow::handleError);
     connect(ui->roleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &ChatWindow::onRoleComboBoxChanged);
-    connect(ui->addRoleButton, &QPushButton::clicked, this, &ChatWindow::on_addRoleButton_clicked);
+            this, &ChatWindow::on_roleComboBox_currentIndexChanged);
     
     // 设置占位符文本
     ui->messageEdit->setPlaceholderText("请输入消息...");
@@ -82,12 +84,31 @@ void ChatWindow::updateRoleList(const QStringList &roles)
     }
 }
 
-void ChatWindow::onRoleComboBoxChanged(int index)
+void ChatWindow::on_roleComboBox_currentIndexChanged(int index)
 {
     if (index >= 0) {
         QString selectedRole = ui->roleComboBox->currentText();
         setCurrentRole(selectedRole);
     }
+}
+
+void ChatWindow::on_newRoleButton_clicked()
+{
+    
+    CustomRoleDialog dialog(this); // Create a new dialog on the stack. Parent 'this' (ChatWindow) for modality.
+    
+    // Connect its signal for this showing only.
+    connect(&dialog, &CustomRoleDialog::roleConfirmed, this, &ChatWindow::handleRoleConfirmed); 
+    
+    dialog.setEditMode(false); // Set mode for this new dialog.
+    // A freshly constructed dialog should have empty fields by default.
+    dialog.exec(); // Show modally. Blocks here.
+}
+
+void ChatWindow::handleRoleConfirmed(const RoleData &data)
+{
+    // 发送信号，通知新角色被创建
+    emit newRoleCreated(data);
 }
 
 void ChatWindow::on_sendButton_clicked()
@@ -155,12 +176,4 @@ void ChatWindow::onRoleSelected(const QString &roleName)
         .arg(roleName)
         .arg("您好！我是您的AI助手，请问有什么可以帮您？");
     ui->chatDisplay->append(welcomeMessage);
-}
-
-void ChatWindow::on_addRoleButton_clicked()
-{
-    // 打开角色管理窗口
-    RoleManager *roleManager = new RoleManager(this);
-    roleManager->setAttribute(Qt::WA_DeleteOnClose);
-    roleManager->show();
 } 

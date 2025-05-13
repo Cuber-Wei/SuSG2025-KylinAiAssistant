@@ -2,20 +2,9 @@
 #define ROLEMANAGER_H
 
 #include <QWidget>
-#include <QListWidget>
-#include <QListWidgetItem>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QFile>
-#include <QMessageBox>
 #include <QMap>
 #include <QString>
 #include "customrole.h"
-
-namespace Ui {
-class RoleManager;
-}
 
 class RoleManager : public QWidget
 {
@@ -25,32 +14,48 @@ public:
     explicit RoleManager(QWidget *parent = nullptr);
     ~RoleManager();
 
+    // 添加自定义角色
+    void addCustomRole(const QString &name, const QString &description, const QString &prompt);
+    
+    // 添加自定义角色（使用 CustomRole 对象）
+    bool addRole(const CustomRole &role);
+    
+    // 添加角色 (通过名称、描述和提示)
+    bool addRole(const QString &name, const QString &description, const QString &prompt);
+    
+    // 删除角色
+    void removeRole(const QString &name);
+    
+    // 编辑角色
+    void editRole(const QString &name, const QString &description, const QString &prompt);
+    
+    // 获取角色列表
     QStringList getRoleList() const;
-    bool addCustomRole(const QString &name, const QString &description, const QString &prompt);
-    bool removeRole(const QString &name);
-    bool modifyRole(const QString &oldName, const QString &newName, const QString &description, const QString &prompt);
+    
+    // 获取角色信息
     CustomRole* getRole(const QString &name) const;
 
 signals:
-    void roleSelected(const QString &roleName);
-    void roleAdded(const QString &roleName);
-    void roleRemoved(const QString &roleName);
-    void roleModified(const QString &roleName);
-
-private slots:
-    void on_addRoleButton_clicked();
-    void on_removeRoleButton_clicked();
-    void on_modifyRoleButton_clicked();
-    void on_roleListWidget_itemClicked(QListWidgetItem *item);
+    void roleAdded(const QString &name);
+    void roleRemoved(const QString &name);
+    void roleModified(const QString &name);
+    void roleSelected(const QString &name);
+    void errorOccurred(const QString &error);
 
 private:
-    Ui::RoleManager *ui;
     QMap<QString, CustomRole*> roles;
     
-    void loadRoles();
-    void saveRoles();
-    void updateRoleList();
-    void setupConnections();
+    // 加载内置角色
+    void loadBuiltInRoles();
+    
+    // 保存自定义角色
+    void saveCustomRoles();
+    
+    // 加载自定义角色
+    void loadCustomRoles();
+    
+    // 初始化默认角色
+    void initializeDefaultRoles();
 };
 
 #endif // ROLEMANAGER_H 
