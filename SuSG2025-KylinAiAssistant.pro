@@ -72,3 +72,20 @@ TRANSLATIONS += \
 
 # 样式文件
 QMAKE_RESOURCE_PREFIX = /qt-project.org
+
+# 麒麟AI SDK 依赖配置
+unix {
+    # 传统AI能力
+    INCLUDEPATH += /usr/include/kysdk-coreai-vision
+    LIBS += -lkysdk-coreai-vision
+    INCLUDEPATH += /usr/include/kysdk-coreai-speech
+    LIBS += -lkysdk-coreai-speech
+    # 生成式AI能力
+    INCLUDEPATH += /usr/include/kysdk-genai-nlp
+    LIBS += -lkysdk-genai-nlp
+    INCLUDEPATH += /usr/include/kysdk-genai-vision
+    LIBS += -lkysdk-genai-vision
+    # 依赖GIO
+    CONFIG += link_pkgconfig
+    PKGCONFIG += gio-unix-2.0
+}
