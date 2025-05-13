@@ -5,11 +5,11 @@ CustomRole::CustomRole(QObject *parent)
 {
 }
 
-CustomRole::CustomRole(const QString &name, const QString &description, const QString &style, QObject *parent)
+CustomRole::CustomRole(const QString &name, const QString &description, const QString &prompt, QObject *parent)
     : QObject(parent)
     , name(name)
     , description(description)
-    , style(style)
+    , prompt(prompt)
 {
 }
 
@@ -27,9 +27,9 @@ QString CustomRole::getDescription() const
     return description;
 }
 
-QString CustomRole::getStyle() const
+QString CustomRole::getPrompt() const
 {
-    return style;
+    return prompt;
 }
 
 void CustomRole::setName(const QString &newName)
@@ -46,24 +46,29 @@ void CustomRole::setDescription(const QString &newDescription)
     }
 }
 
-void CustomRole::setStyle(const QString &newStyle)
+void CustomRole::setPrompt(const QString &newPrompt)
 {
-    if (style != newStyle) {
-        style = newStyle;
+    if (prompt != newPrompt) {
+        prompt = newPrompt;
     }
 }
 
 QString CustomRole::processMessage(const QString &message) const
 {
-    // 根据角色风格处理消息
-    return applyStyle(message);
+    // 根据角色提示词处理消息
+    return applyPrompt(message);
 }
 
-QString CustomRole::applyStyle(const QString &message) const
+QString CustomRole::applyPrompt(const QString &message) const
 {
-    // TODO: 根据角色风格处理消息
+    // TODO: 根据角色提示词处理消息
     // 这里需要根据麒麟AI SDK的能力来实现
     
     // 临时返回一个简单的处理结果
-    return QString("[%1] %2").arg(name, message);
+    if (!prompt.isEmpty()) {
+        // 使用提示词来引导AI回应
+        return QString("[%1] %2").arg(name, message);
+    } else {
+        return QString("[%1] %2").arg(name, message);
+    }
 } 

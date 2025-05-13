@@ -15,13 +15,19 @@ public:
     ~RoleManager();
 
     // 添加自定义角色
-    void addCustomRole(const QString &name, const QString &description, const QString &style);
+    void addCustomRole(const QString &name, const QString &description, const QString &prompt);
+    
+    // 添加自定义角色（使用 CustomRole 对象）
+    bool addRole(const CustomRole &role);
+    
+    // 添加角色 (通过名称、描述和提示)
+    bool addRole(const QString &name, const QString &description, const QString &prompt);
     
     // 删除角色
     void removeRole(const QString &name);
     
     // 编辑角色
-    void editRole(const QString &name, const QString &description, const QString &style);
+    void editRole(const QString &name, const QString &description, const QString &prompt);
     
     // 获取角色列表
     QStringList getRoleList() const;

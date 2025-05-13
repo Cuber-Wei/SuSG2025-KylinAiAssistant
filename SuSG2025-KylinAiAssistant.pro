@@ -27,6 +27,7 @@ SOURCES += \
     src/main.cpp \
     src/ui/mainwindow.cpp \
     src/ui/chatwindow.cpp \
+    src/ui/customroledialog.cpp \
     src/core/chat/chatcore.cpp \
     src/core/role/rolemanager.cpp \
     src/core/role/customrole.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
 HEADERS += \
     src/ui/mainwindow.h \
     src/ui/chatwindow.h \
+    src/ui/customroledialog.h \
     src/core/chat/chatcore.h \
     src/core/role/rolemanager.h \
     src/core/role/customrole.h \
@@ -45,7 +47,8 @@ HEADERS += \
 FORMS += \
     src/ui/mainwindow.ui \
     src/ui/chatwindow.ui \
-    src/ui/rolemanager.ui
+    src/ui/rolemanager.ui \
+    src/ui/customroledialog.ui
 
 # 默认规则
 qnx: target.path = /tmp/$${TARGET}/bin
