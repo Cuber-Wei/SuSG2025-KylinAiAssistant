@@ -153,11 +153,17 @@ void ChatWindow::handleVoiceButtonClicked()
 {
     // 检查语音处理器状态
     if (voiceHandler->isRecording()) {
+        qDebug() << "停止录音...";
         voiceHandler->stopRecording();
         ui->voiceButton->setText("开始录音");
+        ui->voiceButton->setIcon(QIcon(":/resources/icons/voice.png"));
+        ui->messageEdit->setPlaceholderText("请输入消息...");
     } else {
+        qDebug() << "开始录音...";
         if (voiceHandler->startRecording()) {
             ui->voiceButton->setText("停止录音");
+            ui->voiceButton->setIcon(QIcon(":/resources/icons/recording.png"));
+            ui->messageEdit->setPlaceholderText("正在录音，请说话...");
         } else {
             handleError("无法启动录音");
         }
@@ -166,7 +172,12 @@ void ChatWindow::handleVoiceButtonClicked()
 
 void ChatWindow::handleTextRecognized(const QString &text)
 {
-    ui->messageEdit->setPlainText(text);
+    qDebug() << "收到语音识别结果:" << text;
+    if (!text.isEmpty()) {
+        ui->messageEdit->setPlainText(text);
+        // 自动发送识别结果
+        on_sendButton_clicked();
+    }
 }
 
 void ChatWindow::handleError(const QString &error)
