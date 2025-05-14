@@ -89,16 +89,14 @@ bool VoiceHandler::initializeSpeechServices()
     qDebug() << "正在初始化语音识别会话...";
     recognitionSession = speech_recognizer_create_session();
     if (!recognitionSession) {
-        emit errorOccurred("创建语音识别会话失败 (nullptr)");
-        qCritical() << "Failed to create recognition session (nullptr).";
+        emit errorOccurred("创建语音识别会话失败");
         return false;
     }
 
     int ret_init_rec = speech_recognizer_init_session(recognitionSession);
     if (ret_init_rec != 0) {
         emit errorOccurred(QString("初始化语音识别会话失败: %1").arg(ret_init_rec));
-        qCritical() << "Failed to initialize recognition session, error code:" << ret_init_rec;
-        speech_recognizer_destroy_session(&recognitionSession); // Corrected: Pass address of pointer
+        speech_recognizer_destroy_session(&recognitionSession);
         recognitionSession = nullptr;
         return false;
     }
@@ -112,15 +110,13 @@ bool VoiceHandler::initializeSpeechServices()
     qDebug() << "正在初始化语音合成会话...";
     synthesisSession = speech_synthesizer_create_session();
     if (!synthesisSession) {
-        emit errorOccurred("创建语音合成会话失败 (nullptr)");
-        qCritical() << "Failed to create synthesis session (nullptr).";
+        emit errorOccurred("创建语音合成会话失败");
         return false;
     }
     int ret_init_synth = speech_synthesizer_init_session(synthesisSession);
     if (ret_init_synth != 0) {
         emit errorOccurred(QString("初始化语音合成会话失败: %1").arg(ret_init_synth));
-        qCritical() << "Failed to initialize synthesis session, error code:" << ret_init_synth;
-        speech_synthesizer_destroy_session(&synthesisSession); // Corrected: Pass address of pointer
+        speech_synthesizer_destroy_session(&synthesisSession);
         synthesisSession = nullptr;
         return false;
     }
@@ -134,15 +130,10 @@ bool VoiceHandler::initializeSpeechServices()
     // Create a default audio output config for the synthesizer
     AudioConfig *synthAudioOutputConfig = audio_config_create_audio_output_from_default_speaker();
     if (!synthAudioOutputConfig) {
-        qWarning() << "创建语音合成默认扬声器输出配置失败, 将继续尝试初始化";
-        // Not returning false, as TTS might still work if config is set later or not strictly needed for all ops.
+        emit errorOccurred("创建语音合成默认扬声器输出配置失败");
     } else {
-      // Example settings if needed:
-      // audio_config_set_output_audio_speed(synthAudioOutputConfig, 50);
-      // audio_config_set_output_audio_volume(synthAudioOutputConfig, 80);
-      // audio_config_set_output_audio_pitch(synthAudioOutputConfig, 50);
-      speech_synthesizer_set_audio_config(synthesisSession, synthAudioOutputConfig);
-      audio_config_destroy(&synthAudioOutputConfig); // Config is copied internally by SDK, safe to destroy
+        speech_synthesizer_set_audio_config(synthesisSession, synthAudioOutputConfig);
+        audio_config_destroy(&synthAudioOutputConfig);
     }
     
     speech_synthesizer_set_model_config(synthesisSession, modelConfig); // Use the same model config for now

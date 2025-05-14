@@ -32,7 +32,7 @@ public:
     QString getCurrentRolePrompt() const;
 
 public slots:
-    void setCurrentRole(const QString &roleName);
+    void setCurrentRole(const QString &role);
     void updateRoleList(const QStringList &roles);
     void onRoleSelected(const QString &roleName); // Slot to handle role selection from MainWindow
     
@@ -50,6 +50,7 @@ private slots:
     // Added back from .cpp connections
     void handleVoiceButtonClicked(); // Explicitly connected in .cpp for voiceHandler logic
     // void onRoleComboBoxChanged(int index); // Replaced by on_roleComboBox_currentIndexChanged from .ui
+    void onStopRecording();
 
 private:
     Ui::ChatWindow *ui;
