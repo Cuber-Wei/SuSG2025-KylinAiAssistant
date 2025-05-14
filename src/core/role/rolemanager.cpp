@@ -4,9 +4,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDir>
-#include <QDebug>
 
-#define ROLES_FILE "roles.json" // Define ROLES_FILE here
+#define ROLES_FILE "roles.json" 
 
 RoleManager::RoleManager(QWidget *parent)
     : QWidget(parent)
@@ -98,8 +97,6 @@ void RoleManager::loadBuiltInRoles()
 
 void RoleManager::saveCustomRoles()
 {
-    QFile file(ROLES_FILE);
-
     QJsonArray roleArray;
     for (auto it = roles.begin(); it != roles.end(); ++it) {
         CustomRole *role = it.value();
@@ -111,12 +108,12 @@ void RoleManager::saveCustomRoles()
     }
     
     QJsonDocument doc(roleArray);
-    QFile file2("roles.json"); // Renamed to file2 to avoid redeclaration if first file was open
-    if (file2.open(QIODevice::WriteOnly)) {
-        file2.write(doc.toJson());
-        file2.close();
+    QFile file("roles.json");
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(doc.toJson());
+        file.close();
     } else {
-        qWarning() << "RoleManager::saveCustomRoles - Failed to open roles.json for writing:" << file2.errorString(); // Keep qWarning
+        emit errorOccurred("无法保存角色配置文件");
     }
 }
 

@@ -1,6 +1,5 @@
 #include "chatcore.h"
 #include <QDateTime>
-#include <QDebug>
 
 class ChatCore::ChatCorePrivate {
 public:
@@ -221,7 +220,6 @@ void ChatCore::stopChat()
 
 void ChatCore::handleSDKError(int errorCode, const QString &errorMessage)
 {
-    QString fullMessage = QString("错误代码: %1, 错误信息: %2").arg(errorCode).arg(errorMessage);
-    qWarning() << fullMessage;
+    QString fullMessage = QString("错误 [%1]: %2").arg(errorCode).arg(errorMessage);
     emit errorOccurred(fullMessage);
 } 
