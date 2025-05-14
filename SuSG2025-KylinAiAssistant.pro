@@ -60,7 +60,16 @@ INCLUDEPATH += \
     $$PWD/src \
     $$PWD/src/core \
     $$PWD/src/ui \
-    $$PWD/include
+    $$PWD/include \
+    /usr/include/kylin-ai
+
+# 链接库
+LIBS += \
+    -lkysdk-genai-nlp \
+    -lkysdk-coreai-speech \
+    -lkysdk-coreai-vision \
+    -lkysdk-genai-vision \
+    -lkysdk-ai-common
 
 # 资源文件
 RESOURCES += \
