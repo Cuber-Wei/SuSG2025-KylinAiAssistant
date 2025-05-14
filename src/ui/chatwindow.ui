@@ -17,8 +17,8 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="roleLabel">
-       <property name="text">
+    <widget class="QLabel" name="roleLabel">
+     <property name="text">
         <string>当前角色：</string>
        </property>
       </widget>
@@ -30,15 +30,15 @@
          <width>200</width>
          <height>0</height>
         </size>
-       </property>
+     </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="newRoleButton">
        <property name="text">
         <string>新建角色</string>
-       </property>
-      </widget>
+     </property>
+    </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer">
