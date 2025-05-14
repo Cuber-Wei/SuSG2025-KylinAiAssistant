@@ -191,11 +191,18 @@ void ChatWindow::handleVoiceButtonClicked()
 {
     // 检查语音处理器状态
     if (voiceHandler->isRecording()) {
+        // 停止录音
         voiceHandler->stopRecording();
         ui->voiceButton->setText("开始录音");
+        ui->voiceButton->setIcon(QIcon(":/resources/icons/voice.png"));
+        ui->messageEdit->setPlaceholderText("请输入消息...");
+        onStopRecording();
     } else {
+        // 开始录音
         if (voiceHandler->startRecording()) {
             ui->voiceButton->setText("停止录音");
+            ui->voiceButton->setIcon(QIcon(":/resources/icons/recording.png"));
+            ui->messageEdit->setPlaceholderText("正在录音，请说话...");
         } else {
             handleError("无法启动录音");
         }
@@ -204,7 +211,18 @@ void ChatWindow::handleVoiceButtonClicked()
 
 void ChatWindow::handleTextRecognized(const QString &text)
 {
-    ui->messageEdit->setPlainText(text);
+    if (!text.isEmpty()) {
+        // 将识别到的文字显示在文本编辑框中
+        ui->messageEdit->setPlainText(text);
+        
+        // 将光标移动到文本末尾
+        QTextCursor cursor = ui->messageEdit->textCursor();
+        cursor.movePosition(QTextCursor::End);
+        ui->messageEdit->setTextCursor(cursor);
+        
+        // 让文本编辑框获得焦点，方便用户编辑
+        ui->messageEdit->setFocus();
+    }
 }
 
 void ChatWindow::handleError(const QString &error)
@@ -227,4 +245,18 @@ void ChatWindow::onRoleSelected(const QString &roleName)
 void ChatWindow::setRoleManager(RoleManager *manager)
 {
     roleManager = manager;
+}
+
+void ChatWindow::onStopRecording()
+{
+    if (voiceHandler->isRecording()) {
+        // 停止录音并更新UI状态
+        voiceHandler->stopRecording();
+        ui->voiceButton->setText("开始录音");
+        ui->voiceButton->setIcon(QIcon(":/resources/icons/voice.png"));
+        ui->messageEdit->setPlaceholderText("请输入消息...");
+        
+        // 语音识别结果会通过textRecognized信号发送
+        // 在handleTextRecognized槽函数中处理文本显示
+    }
 } 
