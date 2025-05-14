@@ -7,12 +7,8 @@
 #include "../core/chat/chatcore.h"
 #include "../core/voice/voicehandler.h"
 #include "../core/role/customrole.h"
+#include "../core/role/rolemanager.h"
 #include "customroledialog.h"
-
-// Forward declaration for RoleManager
-class RoleManager;
-// Forward declaration for Message (if not fully included via chatcore.h which seems to be the case)
-// struct Message; // ChatCore.h includes this, so it should be fine.
 
 namespace Ui {
 class ChatWindow;
@@ -31,6 +27,9 @@ public:
     QString getCurrentRole() const;
     void setRoleManager(RoleManager *manager);
     void loadChatHistory(const QString &roleName);
+    
+    // 获取当前角色的提示词
+    QString getCurrentRolePrompt() const;
 
 public slots:
     void setCurrentRole(const QString &roleName);
@@ -61,6 +60,10 @@ private:
     RoleManager *roleManager;
     void saveChatHistory(const QString &roleName);
     void displayWelcomeMessage(const QString &roleName);
+    
+    // Helper methods
+    void initializeUI();
+    void setupConnections();
 
 signals:
     void messageSent(const QString &role, const QString &message);
