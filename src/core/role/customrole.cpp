@@ -69,6 +69,6 @@ QString CustomRole::applyPrompt(const QString &message) const
         // 使用提示词来引导AI回应
         return QString("[%1] %2").arg(name, message);
     } else {
-        return QString("[%1] %2").arg(name, message);
+    return QString("[%1] %2").arg(name, message);
     }
 } 

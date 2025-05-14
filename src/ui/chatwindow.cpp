@@ -59,6 +59,17 @@ void ChatWindow::setCurrentRole(const QString &role)
     if (index != -1) {
         ui->roleComboBox->setCurrentIndex(index);
     }
+    
+    // 清空聊天记录
+    ui->chatDisplay->clear();
+    
+    // 显示欢迎消息
+    QString welcomeMessage = QString("<div style='background-color: #F5F5F5; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>"
+                                     "<span style='font-weight: bold; color: #4CAF50;'>已切换到角色：%1</span><br><br>"
+                                     "%2</div>")
+        .arg(role)
+        .arg("您好！我是您的AI助手，请问有什么可以帮您？");
+    ui->chatDisplay->append(welcomeMessage);
 }
 
 void ChatWindow::updateRoleList(const QStringList &roles)
@@ -111,6 +122,22 @@ void ChatWindow::handleRoleConfirmed(const RoleData &data)
     emit newRoleCreated(data);
 }
 
+QString ChatWindow::getCurrentRolePrompt() const
+{
+    // 如果是默认角色或roleManager未初始化，返回空
+    if (currentRole == "默认" || !roleManager) {
+        return "";
+    }
+    
+    // 从角色管理器获取当前角色
+    CustomRole* role = roleManager->getRole(currentRole);
+    if (role) {
+        return role->getPrompt();
+    }
+    
+    return "";
+}
+
 void ChatWindow::on_sendButton_clicked()
 {
     QString message = ui->messageEdit->toPlainText().trimmed();
@@ -126,8 +153,19 @@ void ChatWindow::on_sendButton_clicked()
     // 清空输入框
     ui->messageEdit->clear();
     
+    // 获取当前角色的提示词
+    QString rolePrompt = getCurrentRolePrompt();
+    QString fullMessage;
+    
+    // 如果有特定角色的提示词，则添加到消息前面
+    if (!rolePrompt.isEmpty()) {
+        fullMessage = rolePrompt + "\n\n" + message;
+    } else {
+        fullMessage = message;
+    }
+    
     // 发送消息到聊天核心
-    chatCore->sendMessage(message, currentRole);
+    chatCore->sendMessage(fullMessage, currentRole);
 }
 
 void ChatWindow::handleMessageReceived(const Message &message)
@@ -195,4 +233,9 @@ void ChatWindow::onRoleSelected(const QString &roleName)
         .arg(roleName)
         .arg("您好！我是您的AI助手，请问有什么可以帮您？");
     ui->chatDisplay->append(welcomeMessage);
+}
+
+void ChatWindow::setRoleManager(RoleManager *manager)
+{
+    roleManager = manager;
 } 

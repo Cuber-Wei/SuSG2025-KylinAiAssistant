@@ -54,6 +54,9 @@ void MainWindow::setupConnections()
     // 连接聊天窗口的新建角色信号
     connect(chatWindow, &ChatWindow::newRoleCreated, this, &MainWindow::handleNewRole);
     
+    // 设置角色管理器到聊天窗口
+    chatWindow->setRoleManager(roleManager);
+    
     // 初始化角色列表
     updateRoleList();
 }

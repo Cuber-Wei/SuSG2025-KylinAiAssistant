@@ -6,17 +6,17 @@
 
 ```
 .
-├── include/          # 麒麟AI SDK头文件
-├── lib/              # 麒麟AI SDK库文件
-├── resources/        # 资源文件
+├── include/         # 麒麟AI SDK头文件
+├── lib/             # 麒麟AI SDK库文件
+├── resources/       # 资源文件
 │   ├── icons/       # 图标文件
 │   └── styles/      # 样式文件
-└── src/              # 源代码
-    ├── core/         # 核心功能
+└── src/             # 源代码
+    ├── core/        # 核心功能
     │   ├── chat/    # 聊天相关
     │   ├── role/    # 角色管理
     │   └── voice/   # 语音处理
-    └── ui/           # 界面相关
+    └── ui/          # 界面相关
 ```
 
 ## 功能特性
