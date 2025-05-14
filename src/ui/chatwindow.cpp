@@ -135,7 +135,15 @@ void ChatWindow::handleMessageReceived(const Message &message)
     // 显示AI回复
     QString timeStr = QDateTime::currentDateTime().toString("hh:mm:ss");
     ui->chatDisplay->append(QString("<div><span style='color: #4CAF50; font-weight: bold;'>%1 (%2)</span></div>").arg(message.role).arg(timeStr));
-    ui->chatDisplay->append(QString("<div style='background-color: #F1F8E9; border-radius: 10px; padding: 8px; margin: 4px;'>%1</div>").arg(message.content));
+    
+    // 将消息内容按段落分割并格式化
+    QString formattedContent = message.content;
+    formattedContent.replace("\n", "</p><p>"); // 将换行符转换为段落标签
+    formattedContent = QString("<p>%1</p>").arg(formattedContent); // 添加首尾段落标签
+    
+    // 使用更优雅的样式显示消息
+    ui->chatDisplay->append(QString("<div style='background-color: #F1F8E9; border-radius: 10px; padding: 12px; margin: 8px; line-height: 1.5;'>%1</div>")
+        .arg(formattedContent));
     
     // 滚动到底部
     ui->chatDisplay->verticalScrollBar()->setValue(ui->chatDisplay->verticalScrollBar()->maximum());

@@ -11,6 +11,7 @@ public:
     ChatModelConfig* modelConfig;
     bool isInitialized;
     bool isProcessing;
+    QString currentResponse; // 用于收集完整的回答
     
     ChatCorePrivate() 
         : session(nullptr)
@@ -34,7 +35,7 @@ ChatCore::ChatCore(QObject *parent)
     , d(std::make_unique<ChatCorePrivate>())
 {
     d->currentRole = "default";
-    d->currentModel = "百度-ERNIE-Bot-4"; // 默认模型
+    d->currentModel = "Qwen-2.5-3b_1.0"; // 使用本地的 Qwen 模型
 }
 
 ChatCore::~ChatCore() = default;
@@ -58,7 +59,7 @@ bool ChatCore::initialize()
 
         // 设置默认模型配置
         chat_model_config_set_name(d->modelConfig, d->currentModel.toUtf8().constData());
-        chat_model_config_set_deploy_type(d->modelConfig, ModelDeployType::PublicCloud);
+        chat_model_config_set_deploy_type(d->modelConfig, ModelDeployType::OnDevice);
         genai_text_set_model_config(d->session, d->modelConfig);
 
         // 设置回调函数
@@ -137,9 +138,15 @@ void ChatCore::handleChatResult(ChatResult *result, void *userData)
         bool isEnd = chat_result_get_is_end(result);
 
         if (response) {
+            // 将新的回复添加到当前回复中
+            self->d->currentResponse += QString::fromUtf8(response);
+        }
+
+        // 如果是最后一条消息，发送完整的回复
+        if (isEnd) {
             // 创建AI回复消息
             Message aiMsg;
-            aiMsg.content = QString::fromUtf8(response);
+            aiMsg.content = self->d->currentResponse;
             aiMsg.isUser = false;
             aiMsg.timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
             aiMsg.role = self->d->currentRole;
@@ -150,16 +157,16 @@ void ChatCore::handleChatResult(ChatResult *result, void *userData)
             
             // 发出消息接收信号
             emit self->messageReceived(aiMsg);
-        }
 
-        // 如果是最后一条消息，重置处理状态
-        if (isEnd) {
+            // 重置当前回复和处理状态
+            self->d->currentResponse.clear();
             self->d->isProcessing = false;
             emit self->chatStateChanged(false);
         }
 
     } catch (const std::exception& e) {
         self->d->isProcessing = false;
+        self->d->currentResponse.clear();
         emit self->chatStateChanged(false);
         self->handleSDKError(-1, QString("结果处理异常: %1").arg(e.what()));
     }
