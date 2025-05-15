@@ -15,6 +15,7 @@ VoiceHandler::VoiceHandler(QObject *parent)
     , modelConfig(nullptr)
 {
     initializeAudioDevices();
+    initializeSpeechServices();
 }
 
 VoiceHandler::~VoiceHandler()
